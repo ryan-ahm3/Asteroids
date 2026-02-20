@@ -39,12 +39,12 @@ def main():
                 log_event("player_hit")
                 print("Game over!")
                 sys.exit()
-        for obj in asteroids:
+        for asteroid in asteroids:
             for shot in shots:
-                if shot.collides_with(obj) == True:
+                if shot.collides_with(asteroid) == True:
                     log_event("asteroid_shot")
-                    pygame.sprite.Sprite.kill(obj)
-                    pygame.sprite.Sprite.kill(shot)
+                    asteroid.split()
+                    shot.kill()
 
             
         # Draw
