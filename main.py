@@ -6,12 +6,14 @@ from player import Player
 from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
+from score import Display_Score
 
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
     dt = 0
+    score_keeper = Display_Score(0, None)
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -45,6 +47,7 @@ def main():
                     log_event("asteroid_shot")
                     asteroid.split()
                     shot.kill()
+                    score_keeper.increase(100) 
 
             
         # Draw
@@ -52,6 +55,7 @@ def main():
 
         for obj in drawable:
             obj.draw(screen)
+            score_keeper.draw(screen)
 
         pygame.display.flip()
 
