@@ -7,6 +7,7 @@ from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from shot import Shot
 from score import Display_Score
+from lifedisplay import LifeDisplay
 
 def main():
     pygame.init()
@@ -14,6 +15,8 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
     score_keeper = Display_Score(0, None)
+    life_display = LifeDisplay()
+    lives = 3
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -37,10 +40,14 @@ def main():
         updatable.update(dt)
 
         for obj in asteroids:
-            if obj.collides_with(player) == True:
-                log_event("player_hit")
-                print("Game over!")
-                sys.exit()
+            if obj.collides_with(player) and player.invulnerable_timer <= 0:
+                lives -= 1
+                if lives > 0:
+                    player.respawn()
+                else:
+                    print("Game over!")
+                    sys.exit()
+
         for asteroid in asteroids:
             for shot in shots:
                 if shot.collides_with(asteroid) == True:
@@ -56,6 +63,7 @@ def main():
         for obj in drawable:
             obj.draw(screen)
             score_keeper.draw(screen)
+            life_display.draw(screen, lives)
 
         pygame.display.flip()
 
